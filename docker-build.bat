@@ -1,9 +1,9 @@
-docker build -t crud-api .
+docker build -t authentic-api .
 
 heroku login
 heroku container:login
 
-docker tag crudregister-api registry.heroku.com/crudregister-api/web
-docker push registry.heroku.com/crudregister-api/web
+docker tag authentic-api registry.heroku.com/authentic-api/web
+docker push registry.heroku.com/authentic-api/web
 
-heroku container:release web -a crudregister-api
+heroku container:release web -a authentic-api
