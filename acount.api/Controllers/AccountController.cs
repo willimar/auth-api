@@ -13,6 +13,7 @@ using jwt.simplify.entities;
 using jwt.simplify.enums;
 using jwt.simplify.repositories;
 using jwt.simplify.services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -48,6 +49,7 @@ namespace acount.api.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
         public ActionResult<List<IHandleMessage>> Append(PersonModel value)
         {
@@ -111,6 +113,7 @@ namespace acount.api.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
         public ActionResult<List<IHandleMessage>> Login(AuthenticateModel value)
         {
