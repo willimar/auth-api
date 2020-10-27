@@ -37,7 +37,7 @@ namespace acount.api.Controllers
                 this._accountApplication.SystemName = Request.GetSystemName();
                 var result = this._accountApplication.CreateAccount(value);
 
-                return StatusCode((int)HttpStatusCode.InternalServerError, result);
+                return StatusCode((int)HttpStatusCode.Accepted, result);
             }
             catch (Exception e)
             {

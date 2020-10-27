@@ -75,12 +75,6 @@ namespace account.application
         private IEnumerable<IHandleMessage> Validate(BaseValidator<User> validator, User user)
         {
             var validations = validator.Validate(user);
-
-            if (validations.IsValid)
-            {
-                return user.Validate();
-            }
-
             var result = new List<IHandleMessage>(validations.Errors.Count);
             foreach (var item in validations.Errors)
             {
@@ -135,14 +129,6 @@ namespace account.application
                 .NotNull()
                 .Length(8, 16)
                 .WithMessage("The login needs be between 8 and 16 characters.");
-            validator.RuleFor(x => x.HashIdEmail)
-                .NotEmpty()
-                .NotNull()
-                .WithMessage("Passowrdo not set to user.");
-            validator.RuleFor(x => x.HashIdLogin)
-                .NotEmpty()
-                .NotNull()
-                .WithMessage("Passowrdo not set to user.");
             validator.RuleFor(x => x.Roles)
                 .NotEmpty()
                 .NotNull()
@@ -163,12 +149,19 @@ namespace account.application
             try
             {
                 var entity = this.GetPerson(this._personService, this._userProfile, value);
+                
+                // Only one account by email or username
+                if (entity == null)
+                {
+                    handleMessage.Add(new HandleMessage("ThereIsAccount", $"Account with this e-mail or user name was found.", HandlesCode.ManyRecordsFound));
+                    return handleMessage;
+                }
+
                 var user = this.GetUser(entity);
 
-                // Only one account by email or username
-                if (entity == null || user == null)
+                if (user == null)
                 {
-                    handleMessage.Add(new HandleMessage("ThereIsUser", $"Account with this e-mail or user name was found.", HandlesCode.ManyRecordsFound));
+                    handleMessage.Add(new HandleMessage("ThereIsUser", $"User with this e-mail or user name was found.", HandlesCode.ManyRecordsFound));
                     return handleMessage;
                 }
 
@@ -183,7 +176,18 @@ namespace account.application
                 this.HasAccess = true;
 
                 handleMessage.AddRange(this._personService.SaveData(entity));
+
+                if (handleMessage.Any(x => x.Code != HandlesCode.Accepted))
+                {
+                    return handleMessage.Distinct();
+                }
+
                 handleMessage.AddRange(this.SaveUser(user, value.UserInfo.UserPassword));
+
+                if (handleMessage.Any(x => x.Code != HandlesCode.Accepted))
+                {
+                    this._personService.DeleteData(entity);
+                }
 
                 return handleMessage.Distinct();
             }

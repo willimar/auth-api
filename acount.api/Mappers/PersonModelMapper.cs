@@ -32,6 +32,7 @@ namespace acount.api.Mappers
                 .ForMember(dest => dest.User, map => map.MapFrom(src => new User() {
                     Email = src.UserInfo.UserEmail,
                     Login = src.UserInfo.UserName,
+                    UserName = src.PersonInfo.Name,
                     Status = RecordStatus.Active,
                     RegisterDate = DateTime.UtcNow,
                     LastChangeDate = DateTime.UtcNow
