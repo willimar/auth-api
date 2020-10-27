@@ -1,15 +1,8 @@
-﻿using acount.api.Models;
-using city.core.entities;
+﻿using account.application;
+using account.application.Models;
 using crud.api.core;
-using crud.api.core.enums;
-using crud.api.core.fieldType;
 using crud.api.core.interfaces;
-using crud.api.core.mappers;
-using crud.api.core.repositories;
-using crud.api.core.services;
 using crud.api.dto.Person;
-using crud.api.register.entities.registers;
-using jwt.simplify.services;
 using Jwt.Simplify.Core.Entities;
 using Jwt.Simplify.Core.Enums;
 using Microsoft.AspNetCore.Authorization;
@@ -17,7 +10,6 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 
 namespace acount.api.Controllers
@@ -28,22 +20,11 @@ namespace acount.api.Controllers
     [ApiController]
     public class AccountController : Controller
     {
-        private readonly MapperProfile<PersonModel, Person<User>> _userProfile;
-        private readonly IService<Person<User>> _personService;
-        private readonly IRepository<City> _cityRepository;
-        private readonly UserService _userService;
-        //private readonly UserRepository _userRepository;
+        private readonly AccountApplication _accountApplication;
 
-        public AccountController(IService<Person<User>> personService,
-                MapperProfile<PersonModel, Person<User>> userProfile, 
-                IRepository<City> city, 
-                UserService userService)
+        public AccountController(AccountApplication accountApplication)
         {
-            this._userProfile = userProfile;
-            this._personService = personService;
-            this._cityRepository = city;
-            this._userService = userService;
-            //this._userRepository = userRepository;
+            this._accountApplication = accountApplication;
         }
 
         [HttpPost]
@@ -51,70 +32,16 @@ namespace acount.api.Controllers
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
         public ActionResult<List<IHandleMessage>> Append(PersonModel value)
         {
-            List<IHandleMessage> handleMessage = new List<IHandleMessage>();
-
             try
             {
-                var entity = this._personService.GetData(e =>
-                    (e.User.Login.Equals(value.UserInfo.UserName) ||
-                    e.User.Email.Equals(value.UserInfo.UserEmail))
-                ).FirstOrDefault();
+                this._accountApplication.SystemName = Request.GetSystemName();
+                var result = this._accountApplication.CreateAccount(value);
 
-                // Only one account by email or username
-                if (entity != null)
-                {
-                    handleMessage.Add(new HandleMessage("ThereIsUser", $"Account with this e-mail or user name was found.", HandlesCode.ManyRecordsFound));
-                    return StatusCode((int)HttpStatusCode.BadRequest, handleMessage);
-                }
-
-                entity = this._userProfile.Map(value);
-
-                entity.Id = Guid.NewGuid();
-                entity.AccountId = entity.Id;
-
-                var user = entity.User;
-
-                user.Id = entity.Id;
-                user.LastChangeDate = entity.LastChangeDate;
-                user.Login = value.UserInfo.UserName;
-                user.Status = RecordStatus.Active;
-                user.RegisterDate = entity.RegisterDate;
-                user.Email = value.UserInfo.UserEmail;
-                user.Roles = new List<UserRule>() 
-                {
-                    new UserRule()
-                    {
-                        RolerName = "Root",
-                        Id = Guid.NewGuid(),
-                        LastChangeDate = user.LastChangeDate,
-                        RegisterDate = user.RegisterDate,
-                        Roler = RulerType.SuperUser,
-                        Status = RecordStatus.Active
-                    }
-                };
-                user.AuthorizedSystems = new List<AuthorizedSystem>()
-                {
-                    new AuthorizedSystem()
-                    {
-                        AccountId = entity.Id,
-                        SystemName = "e-stock"
-                    }
-                };
-
-                var validate = entity.Validate();
-
-                if (validate.Any())
-                {
-                    return StatusCode((int)HttpStatusCode.BadRequest, validate);
-                }
-
-                handleMessage.AddRange(this._personService.SaveData(entity));
-                this._userService.SaveData(user, value.UserInfo.UserPassword);
-
-                return StatusCode((int)HttpStatusCode.OK, handleMessage.Distinct());
+                return StatusCode((int)HttpStatusCode.InternalServerError, result);
             }
             catch (Exception e)
             {
+                List<IHandleMessage> handleMessage = new List<IHandleMessage>();
                 handleMessage.Add(new HandleMessage(e));
                 return StatusCode((int)HttpStatusCode.InternalServerError, handleMessage);
             }
@@ -125,16 +52,41 @@ namespace acount.api.Controllers
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
         public ActionResult<List<IHandleMessage>> Login(AuthenticateModel value)
         {
-            List<IHandleMessage> handleMessage = new List<IHandleMessage>();
-
             try
             {
-                handleMessage.Add(this._userService.Login(value.User, value.Password));
+                var result = this._accountApplication.Login(value);
 
-                return StatusCode((int)HttpStatusCode.OK, handleMessage);
+                return StatusCode((int)HttpStatusCode.OK, result);
             }
             catch (Exception e)
             {
+                List<IHandleMessage> handleMessage = new List<IHandleMessage>();
+                handleMessage.Add(new HandleMessage(e));
+                return StatusCode((int)HttpStatusCode.InternalServerError, handleMessage);
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
+        public ActionResult<List<IHandleMessage>> SaveUser(User user, string password)
+        {
+            try
+            {
+                var userUri = new Uri(Program.AthenticateApi, "api/Authorized");
+                var auth = Request.Authenticated(userUri.ToString());
+
+                this._accountApplication.SystemName = Request.GetSystemName();
+                this._accountApplication.HasAccess = auth.HasAccess(RulerType.EditorUser, "User");
+                this._accountApplication.AccountId = auth.GetAccountId(Request.GetSystemName());
+
+                var result = this._accountApplication.SaveUser(user, password);
+
+                return StatusCode((int)HttpStatusCode.OK, result);
+            }
+            catch (Exception e)
+            {
+                List<IHandleMessage> handleMessage = new List<IHandleMessage>();
                 handleMessage.Add(new HandleMessage(e));
                 return StatusCode((int)HttpStatusCode.InternalServerError, handleMessage);
             }

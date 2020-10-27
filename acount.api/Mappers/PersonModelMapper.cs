@@ -6,16 +6,17 @@ using crud.api.dto.Enums;
 using crud.api.dto.Person;
 using crud.api.register.entities.registers;
 using crud.api.register.entities.registers.relational;
+using Jwt.Simplify.Core.Entities;
 using System;
 using System.Collections.Generic;
 
 namespace acount.api.Mappers
 {
-    public class PersonModelMapper<TUser> : IMapperEntity where TUser : class, new()
+    public class PersonModelMapper : IMapperEntity 
     {
         public void Mapper(IMapperConfigurationExpression profile)
         {
-            profile.CreateMap<PersonModel, Person<TUser>>()
+            profile.CreateMap<PersonModel, Person<User>>()
                 .ForMember(dest => dest.Id, map => map.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Name, map => map.MapFrom(src => src.PersonInfo.Name))
                 .ForMember(dest => dest.NickName, map => map.MapFrom(src => src.PersonInfo.NickName))
@@ -28,7 +29,13 @@ namespace acount.api.Mappers
                 .ForMember(dest => dest.RegisterDate, map => map.MapFrom(src => DateTime.UtcNow.AddMinutes(-3)))
                 .ForMember(dest => dest.LastChangeDate, map => map.MapFrom(src => DateTime.UtcNow.AddMinutes(-3)))
                 .ForMember(dest => dest.Status, map => map.MapFrom(src => RecordStatus.Active))
-                .ForMember(dest => dest.User, map => map.MapFrom(src => new TUser()))
+                .ForMember(dest => dest.User, map => map.MapFrom(src => new User() {
+                    Email = src.UserInfo.UserEmail,
+                    Login = src.UserInfo.UserName,
+                    Status = RecordStatus.Active,
+                    RegisterDate = DateTime.UtcNow,
+                    LastChangeDate = DateTime.UtcNow
+                }))
                 .ForMember(dest => dest.Contacts, map => map.MapFrom(src => GetContacts(src.PersonalContacts)))
                 .ForMember(dest => dest.Addresses, map => map.MapFrom(src => GetAddress(src.Addresses)))
                 .ForMember(dest => dest.Documents, map => map.MapFrom(src => GetDocuments(src.Documents)));

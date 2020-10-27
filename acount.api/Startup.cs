@@ -1,3 +1,4 @@
+using account.application;
 using acount.api.Context;
 using acount.api.Mappers;
 using city.core.entities;
@@ -136,6 +137,8 @@ namespace acount.api
                 new DataProvider(new MongoClientFactory(), Program.DataBaseName)
             );
 
+            services.AddScoped<AccountApplication>();
+
             #region Repositories
 
             services.AddScoped<IRepository<City>, CityRepository>();
@@ -150,9 +153,9 @@ namespace acount.api
 
             #region Mappers
 
-            services.AddScoped<PersonModelMapper<User>>();
+            services.AddScoped<PersonModelMapper>();
 
-            services.AddTransient(sp => new MapperProfile<PersonModel, Person<User>>((PersonModelMapper<User>)sp.GetService(typeof(PersonModelMapper<User>))));
+            services.AddTransient(sp => new MapperProfile<PersonModel, Person<User>>((PersonModelMapper)sp.GetService(typeof(PersonModelMapper))));
 
             #endregion
 
