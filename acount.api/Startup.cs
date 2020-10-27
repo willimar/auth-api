@@ -1,38 +1,35 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using acount.api.Context;
+using acount.api.Mappers;
 using city.core.entities;
 using city.core.repositories;
 using crud.api.core.mappers;
 using crud.api.core.repositories;
 using crud.api.core.services;
-using crud.api.dto.Mapper;
 using crud.api.dto.Person;
 using crud.api.register.entities.registers;
 using crud.api.register.repositories.registers;
 using crud.api.register.services.registers;
+using crud.api.register.validations.register;
 using data.provider.core;
 using data.provider.core.mongo;
-using jwt.simplify.entities;
 using jwt.simplify.repositories;
 using jwt.simplify.services;
+using Jwt.Simplify.Core.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
+using System;
+using System.Linq;
+using System.Reflection;
+using System.Text;
 
 namespace acount.api
 {
@@ -147,10 +144,15 @@ namespace acount.api
 
             #endregion
 
+            #region Validators
+            services.AddTransient<UserValidator<User>>();
+            #endregion
+
             #region Mappers
 
             services.AddScoped<PersonModelMapper<User>>();
-            services.AddScoped(sp => new MapperProfile<PersonModel, Person<User>>((PersonModelMapper<User>)sp.GetService(typeof(PersonModelMapper<User>))));
+
+            services.AddTransient(sp => new MapperProfile<PersonModel, Person<User>>((PersonModelMapper<User>)sp.GetService(typeof(PersonModelMapper<User>))));
 
             #endregion
 

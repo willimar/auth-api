@@ -9,10 +9,9 @@ using crud.api.core.repositories;
 using crud.api.core.services;
 using crud.api.dto.Person;
 using crud.api.register.entities.registers;
-using jwt.simplify.entities;
-using jwt.simplify.enums;
-using jwt.simplify.repositories;
 using jwt.simplify.services;
+using Jwt.Simplify.Core.Entities;
+using Jwt.Simplify.Core.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -35,9 +34,8 @@ namespace acount.api.Controllers
         private readonly UserService _userService;
         //private readonly UserRepository _userRepository;
 
-        public AccountController(IService<Person<User>> personService, 
-                MapperProfile<PersonModel, 
-                Person<User>> userProfile, 
+        public AccountController(IService<Person<User>> personService,
+                MapperProfile<PersonModel, Person<User>> userProfile, 
                 IRepository<City> city, 
                 UserService userService)
         {
@@ -58,7 +56,6 @@ namespace acount.api.Controllers
             try
             {
                 var entity = this._personService.GetData(e =>
-                    e.IsRoot &&
                     (e.User.Login.Equals(value.UserInfo.UserName) ||
                     e.User.Email.Equals(value.UserInfo.UserEmail))
                 ).FirstOrDefault();
@@ -73,8 +70,7 @@ namespace acount.api.Controllers
                 entity = this._userProfile.Map(value);
 
                 entity.Id = Guid.NewGuid();
-                entity.IsRoot = true;
-                entity.RootId = entity.Id;
+                entity.AccountId = entity.Id;
 
                 var user = entity.User;
 
@@ -84,14 +80,26 @@ namespace acount.api.Controllers
                 user.Status = RecordStatus.Active;
                 user.RegisterDate = entity.RegisterDate;
                 user.Email = value.UserInfo.UserEmail;
-                user.Roles = new List<UserRule>() { new UserRule() { 
-                    RolerName = "Root", 
-                    Id = entity.Id, 
-                    LastChangeDate = user.LastChangeDate,
-                    RegisterDate = user.RegisterDate,
-                    Roler = RulerType.SuperUser,
-                    Status = RecordStatus.Active
-                } };
+                user.Roles = new List<UserRule>() 
+                {
+                    new UserRule()
+                    {
+                        RolerName = "Root",
+                        Id = Guid.NewGuid(),
+                        LastChangeDate = user.LastChangeDate,
+                        RegisterDate = user.RegisterDate,
+                        Roler = RulerType.SuperUser,
+                        Status = RecordStatus.Active
+                    }
+                };
+                user.AuthorizedSystems = new List<AuthorizedSystem>()
+                {
+                    new AuthorizedSystem()
+                    {
+                        AccountId = entity.Id,
+                        SystemName = "e-stock"
+                    }
+                };
 
                 var validate = entity.Validate();
 

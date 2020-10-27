@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +24,7 @@ namespace acount.api
         public static string DataBaseAuth { get { lock (_lock) { return Configuration.ReadConfig<string>("MongoDb", "Auth"); } } }
         public static string DataBaseName { get { lock (_lock) { return Configuration.ReadConfig<string>("MongoDb", "DataBase"); } } }
         public static Uri PostalCodeApi { get; internal set; }
+        public static Uri AthenticateApi { get { return new Uri(@"https://authentic-api.herokuapp.com/"); } }
 
         public static void Main(string[] args)
         {
