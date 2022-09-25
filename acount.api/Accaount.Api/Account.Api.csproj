@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <PackageProjectUrl>https://github.com/willimar/crud.api</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/willimar/crud.api</RepositoryUrl>
+    <Version>3.0.1</Version>
+    <Copyright>© 2022 Willimar</Copyright>
+    <Description>Account API is autenticate back-end service</Description>
+    <Product>Account Rest API</Product>
+    <Authors>Rocha, Willimar</Authors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DataCore.Jwt" Version="2.1.1.6" />
+    <PackageReference Include="DataCore.Provider.MongoDb" Version="2.1.1.6" />
+    <PackageReference Include="extension.facilities" Version="1.0.1.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.9" />
+    <PackageReference Include="Swagger.Simplify" Version="1.0.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Account.Domain\Account.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
