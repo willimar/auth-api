@@ -51,11 +51,9 @@ namespace Account.Api.Controllers.v3
 
         [HttpPost("refresh-token")]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
-        [Authorize()]
-        public async ValueTask<IActionResult> RefreshToken()
+        public async ValueTask<IActionResult> RefreshToken([FromBody] RefreshToken refreshToken)
         {
-            var refreshToken = this.Request.Headers.ProxyAuthenticate.ToString();
-            var response = await this._authenticateCommand.Authenticate(refreshToken);
+            var response = await this._authenticateCommand.Authenticate(refreshToken.Token);
 
             if (response.isValid)
             {
