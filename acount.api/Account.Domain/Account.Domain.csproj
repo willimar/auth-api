@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DataCore.Jwt" Version="2.1.1.6" />
+    <PackageReference Include="DataCore.Jwt" Version="2.1.1.7" />
     <PackageReference Include="DataCore.Mapper" Version="2.1.1.2" />
     <PackageReference Include="DataCore.Provider.MongoDb" Version="2.1.1.6" />
     <PackageReference Include="FluentValidation" Version="11.2.2" />

@@ -19,6 +19,8 @@ namespace Account.Domain.Setups
         public static void RegisterAccountDomain(this IServiceCollection services)
         {
             services.AddScoped<UserCommand>();
+            services.AddScoped<AuthenticateCommand>();
+
             services.AddScoped<IRepositoryWrite<User>, UserRepositoryWrite>();
             services.AddScoped<IRepositoryRead<User>, UserRepositoryRead>();
             services.AddScoped<UserMapperConfig>();

@@ -70,12 +70,14 @@ namespace Account.Api.Extensions
             public IEnumerable<Claim> Claims { get; set; } = Enumerable.Empty<Claim>();
             public string Issuer { get; set; }
             public string Audience { get; set; }
+            public double ExpiresRefreshToken { get; set; }
 
             public JwtOptions(IConfiguration configuration)
             {
                 var jwt = "JwtOptions";
                 this.Key = configuration.ReadConfig<string>(jwt, "Key");
                 this.Expires = configuration.ReadConfig<double>(jwt, "Expires");
+                this.ExpiresRefreshToken = configuration.ReadConfig<double>(jwt, "ExpiresRefreshToken");
                 this.SecurityAlgorithm = SecurityAlgorithms.HmacSha256Signature;
                 this.Issuer = configuration.ReadConfig<string>(jwt, "Issuer");
                 this.Audience = configuration.ReadConfig<string>(jwt, "Audience");

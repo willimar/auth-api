@@ -14,11 +14,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DataCore.Jwt" Version="2.1.1.6" />
+    <PackageReference Include="DataCore.Jwt" Version="2.1.1.7" />
     <PackageReference Include="DataCore.Provider.MongoDb" Version="2.1.1.6" />
     <PackageReference Include="extension.facilities" Version="1.0.1.7" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.9" />
-    <PackageReference Include="Swagger.Simplify" Version="1.0.1.1" />
+    <PackageReference Include="Swagger.Simplify" Version="1.0.2.3" />
   </ItemGroup>
 
   <ItemGroup>
