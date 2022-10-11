@@ -84,6 +84,8 @@ namespace Account.Api
         {
             var currentCulture = Thread.CurrentThread.CurrentCulture;
             var suportedCultures = new CultureInfo[] { currentCulture };
+
+            app.UseMiddleware<AccountMiddleware>();
             app.ConfigureInSwaggerSimplify(currentCulture, suportedCultures, typeof(Startup).Assembly);
         }
     }
