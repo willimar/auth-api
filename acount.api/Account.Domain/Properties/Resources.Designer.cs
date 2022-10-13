@@ -61,6 +61,15 @@ namespace Account.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Has a problem to change password data..
+        /// </summary>
+        internal static string ChangePasswordError {
+            get {
+                return ResourceManager.GetString("ChangePasswordError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Has a problem to change password..
         /// </summary>
         internal static string InvalidChangePassword {
@@ -84,6 +93,15 @@ namespace Account.Domain.Properties {
         internal static string InvalidGroupId {
             get {
                 return ResourceManager.GetString("InvalidGroupId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Old password is invalid..
+        /// </summary>
+        internal static string InvalidPasswordException {
+            get {
+                return ResourceManager.GetString("InvalidPasswordException", resourceCulture);
             }
         }
         
@@ -115,7 +133,7 @@ namespace Account.Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid tentant to user..
+        ///   Looks up a localized string similar to Invalid tenant to user..
         /// </summary>
         internal static string InvalidTenantId {
             get {
@@ -142,6 +160,15 @@ namespace Account.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password changed..
+        /// </summary>
+        internal static string PasswordChanged {
+            get {
+                return ResourceManager.GetString("PasswordChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to There is user..
         /// </summary>
         internal static string ThereIsUser {
@@ -156,6 +183,15 @@ namespace Account.Domain.Properties {
         internal static string UsernameLimits {
             get {
                 return ResourceManager.GetString("UsernameLimits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account was not found..
+        /// </summary>
+        internal static string UserNotFoundException {
+            get {
+                return ResourceManager.GetString("UserNotFoundException", resourceCulture);
             }
         }
     }

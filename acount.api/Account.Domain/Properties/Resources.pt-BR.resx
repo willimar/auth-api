@@ -118,48 +118,48 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ChangePasswordError" xml:space="preserve">
-    <value>Has a problem to change password data.</value>
+    <value>Tivemos um problema para alterar a senha.</value>
   </data>
   <data name="InvalidChangePassword" xml:space="preserve">
-    <value>Has a problem to change password.</value>
+    <value>Tivemos um problema para atualizar a senha.</value>
   </data>
   <data name="InvalidEmail" xml:space="preserve">
-    <value>Email has be [nome]@[host].[com] for exemple.</value>
+    <value>O email tem de ter o formato  [nome]@[host].[com] por exemplo.</value>
   </data>
   <data name="InvalidGroupId" xml:space="preserve">
-    <value>Ivalid group to user.</value>
+    <value>Grupo de usuário é inválido.</value>
   </data>
   <data name="InvalidPasswordException" xml:space="preserve">
-    <value>Old password is invalid.</value>
+    <value>A senha atual é inválida.</value>
   </data>
   <data name="InvalidPasswordSets" xml:space="preserve">
-    <value>Invalid password sets.</value>
+    <value>Conjunto de senhas inválidos.</value>
   </data>
   <data name="InvalidSizeFullName" xml:space="preserve">
-    <value>Limit of the characters is between 8 and 100.</value>
+    <value>O limite de caracteres deve ser entre 8 e 100.</value>
   </data>
   <data name="InvalidStatusNewAccount" xml:space="preserve">
-    <value>New account has not be draft record.</value>
+    <value>Uma nova conta não pode ser um rascunho.</value>
   </data>
   <data name="InvalidTenantId" xml:space="preserve">
-    <value>Invalid tenant to user.</value>
+    <value>Conta principal é inválida.</value>
   </data>
   <data name="InvalidUserId" xml:space="preserve">
-    <value>Invalid Id value to user.</value>
+    <value>Identificação do usuário é inválida.</value>
   </data>
   <data name="InvalidUserName" xml:space="preserve">
-    <value>Invalid user name.</value>
+    <value>Nome de usuário é inválido.</value>
   </data>
   <data name="PasswordChanged" xml:space="preserve">
-    <value>Password changed.</value>
+    <value>Senha modificada.</value>
   </data>
   <data name="ThereIsUser" xml:space="preserve">
-    <value>There is user.</value>
+    <value>Usuário já existe.</value>
   </data>
   <data name="UsernameLimits" xml:space="preserve">
-    <value>Username has limit between 8 and 25 characters.</value>
+    <value>Nome do usuário deve conter entre 8 e 25 caracteres.</value>
   </data>
   <data name="UserNotFoundException" xml:space="preserve">
-    <value>Account was not found.</value>
+    <value>Conta não foi encontrada.</value>
   </data>
 </root>

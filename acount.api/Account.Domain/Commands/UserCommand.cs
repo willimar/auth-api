@@ -1,15 +1,11 @@
 ﻿using Account.Domain.Commands.Dtos;
 using Account.Domain.Entities;
 using Account.Domain.Extensions;
+using Account.Domain.Properties;
 using Auvo.Financeiro.Application.Mappers.Fornecedor;
 using DataCore.Domain.Concrets;
 using DataCore.Domain.Enumerators;
 using DataCore.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Account.Domain.Commands
 {
@@ -61,7 +57,7 @@ namespace Account.Domain.Commands
 
             if (user is null)
             {
-                response = response.Append(HandleMessage.Factory("UserNotFoundException", "Account was not found.", HandlesCode.ValueNotFound));
+                response = response.Append(HandleMessage.Factory(nameof(Resources.UserNotFoundException), Resources.UserNotFoundException, HandlesCode.ValueNotFound));
                 return response;
             }
 
@@ -72,7 +68,7 @@ namespace Account.Domain.Commands
 
             if (!actualHashList.Any())
             {
-                response = response.Append(HandleMessage.Factory("InvalidPasswordException", "Old password is invalid.", HandlesCode.ValueNotFound));
+                response = response.Append(HandleMessage.Factory(nameof(Resources.InvalidPasswordException), Resources.InvalidPasswordException, HandlesCode.ValueNotFound));
                 return response;
             }
 
@@ -92,11 +88,11 @@ namespace Account.Domain.Commands
 
                 if (response.Any(x => x.Code == HandlesCode.BadRequest) || !saved)
                 {
-                    response = response.Append(HandleMessage.Factory("ChangePasswordError", "Has a problem to change password data.", HandlesCode.InternalException));
+                    response = response.Append(HandleMessage.Factory(nameof(Resources.ChangePasswordError), Resources.ChangePasswordError, HandlesCode.InternalException));
                 }
                 else
                 {
-                    response = response.Append(HandleMessage.Factory("PasswordChanged", "Password changed.", HandlesCode.Accepted));
+                    response = response.Append(HandleMessage.Factory(nameof(Resources.PasswordChanged), Resources.PasswordChanged, HandlesCode.Accepted));
                 }
             }
             return response;
