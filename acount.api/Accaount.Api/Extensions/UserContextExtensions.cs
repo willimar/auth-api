@@ -17,6 +17,15 @@ namespace Account.Api.Extensions
         {
             private readonly IHttpContextAccessor _httpContextAccessor;
 
+            public AuthenticatedUser(IHttpContextAccessor httpContextAccessor, IJwtOptions jwtOptions)
+            {
+                this._httpContextAccessor = httpContextAccessor;
+                var authorization = this._httpContextAccessor.HttpContext?.Request.Headers.Authorization;
+                var token = authorization?.ToString().Replace("Bearer ", string.Empty);
+
+                this.MapperToken(token, jwtOptions);
+            }
+
             public string UserName { get; set; } = string.Empty;
             public string FullName { get; set; } = string.Empty;
             public string UserEmail { get; set; } = string.Empty;
@@ -26,15 +35,6 @@ namespace Account.Api.Extensions
             public StatusRecord Status { get; set; }
             public Guid TenantId { get; set; }
             public Guid GroupId { get; set; }
-
-            public AuthenticatedUser(IHttpContextAccessor httpContextAccessor, IJwtOptions jwtOptions)
-            {
-                this._httpContextAccessor = httpContextAccessor;
-                var authorization = this._httpContextAccessor.HttpContext?.Request.Headers.Authorization;
-                var token = authorization?.ToString();
-
-                this.MapperToken(token, jwtOptions);
-            }
 
             private void MapperToken(string? token, IJwtOptions jwtOptions)
             {

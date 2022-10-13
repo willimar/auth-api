@@ -49,12 +49,14 @@ namespace Account.Api.Controllers.v3
             }
         }
 
-        [HttpPost("refresh-token")]
-        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
+        [HttpGet("refresh-token")]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         [Authorize]
-        public async ValueTask<IActionResult> RefreshToken([FromBody] RefreshToken refreshToken)
+        public async ValueTask<IActionResult> RefreshToken()
         {
-            var response = await this._authenticateCommand.Authenticate(refreshToken.Token);
+            var token = this.Request.Headers.Authorization;
+            token = token.ToString().Replace("Bearer ", string.Empty);
+            var response = await this._authenticateCommand.Authenticate(token);
 
             if (response.isValid)
             {
@@ -70,8 +72,6 @@ namespace Account.Api.Controllers.v3
 
                 return await ValueTask.FromResult(Unauthorized());
             }
-
-            return await ValueTask.FromResult(Ok());
         }
     }
 }

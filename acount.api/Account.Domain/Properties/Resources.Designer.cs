@@ -61,11 +61,29 @@ namespace Account.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Has a problem to change password..
+        /// </summary>
+        internal static string InvalidChangePassword {
+            get {
+                return ResourceManager.GetString("InvalidChangePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email has be [nome]@[host].[com] for exemple..
         /// </summary>
         internal static string InvalidEmail {
             get {
                 return ResourceManager.GetString("InvalidEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ivalid group to user..
+        /// </summary>
+        internal static string InvalidGroupId {
+            get {
+                return ResourceManager.GetString("InvalidGroupId", resourceCulture);
             }
         }
         
@@ -93,6 +111,24 @@ namespace Account.Domain.Properties {
         internal static string InvalidStatusNewAccount {
             get {
                 return ResourceManager.GetString("InvalidStatusNewAccount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid tentant to user..
+        /// </summary>
+        internal static string InvalidTenantId {
+            get {
+                return ResourceManager.GetString("InvalidTenantId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Id value to user..
+        /// </summary>
+        internal static string InvalidUserId {
+            get {
+                return ResourceManager.GetString("InvalidUserId", resourceCulture);
             }
         }
         

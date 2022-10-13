@@ -1,0 +1,217 @@
+{
+	"info": {
+		"_postman_id": "ba2a3d01-08b8-4bfb-9a0f-edb0deaa951e",
+		"name": "Authenticate Consumer Sample",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register Account",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userName\": \"user.name\",\r\n  \"password\": \"123ABCabc\",\r\n  \"userEmail\": \"user.name@host.com\",\r\n  \"fullName\": \"User Name\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44337/api/v3/User/register-account",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44337",
+					"path": [
+						"api",
+						"v3",
+						"User",
+						"register-account"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authenticate",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"login\": \"user.name\",\r\n  \"password\": \"123ABCabc\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44337/api/v3/Authenticate/authenticate",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44337",
+					"path": [
+						"api",
+						"v3",
+						"Authenticate",
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Refresh Token",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJHcm91cElkIjoiZDZlNGE2OTAtNzdmYy00YzI4LThmYjctNTQyNGVlZDI3ODA3IiwiVGVuYW50SWQiOiI4NDhkODE0Ni1hMjVmLTQ4N2QtYjE1ZC04NTdlZjZkMzAyZDgiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIxNS8xMC8yMDIyIDAwOjEwOjMxIiwibmFtZWlkIjoiZDZjZWI5ZjYtNjllZS00YmQ5LTlhYWMtNGRjYmI1MTY5YTU3IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvc3lzdGVtIjoiNDk0QUFEOEFFMTREMkY0MTQ1QkFCMzI3NTQzRjMxRjAiLCJuYmYiOjE2NjU2MTk4MzEsImV4cCI6MTY2NTc5MjYzMSwiaWF0IjoxNjY1NjE5ODMxLCJpc3MiOiJOb21lUXVhbHF1ZXIiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0In0.ez816Kv2oua1KrnbRwFOfgrTRl_wCjlYqZ5UPR6pjPY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"login\": \"user.name\",\r\n  \"password\": \"123ABCabc\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44337/api/v3/Authenticate/refresh-token",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44337",
+					"path": [
+						"api",
+						"v3",
+						"Authenticate",
+						"refresh-token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6InVzZXIubmFtZSIsIlVzZXJFbWFpbCI6InVzZXIubmFtZUBob3N0LmNvbSIsIkZ1bGxOYW1lIjoiVXNlciBOYW1lIiwiR3JvdXBJZCI6ImQ2ZTRhNjkwLTc3ZmMtNGMyOC04ZmI3LTU0MjRlZWQyNzgwNyIsIlRlbmFudElkIjoiODQ4ZDgxNDYtYTI1Zi00ODdkLWIxNWQtODU3ZWY2ZDMwMmQ4IiwiQ3JlYXRlZCI6IjEzLzEwLzIwMjIgMDA6MDg6MzIiLCJNb2RpZmllZCI6IjEzLzEwLzIwMjIgMDA6MDg6MzIiLCJTdGF0dXMiOiJEcmFmdCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJhdGlvbiI6IjEzLzEwLzIwMjIgMDg6MTY6NTYiLCJuYW1laWQiOiJkNmNlYjlmNi02OWVlLTRiZDktOWFhYy00ZGNiYjUxNjlhNTciLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zeXN0ZW0iOiI0OTRBQUQ4QUUxNEQyRjQxNDVCQUIzMjc1NDNGMzFGMCIsIm5iZiI6MTY2NTYyMDIxNiwiZXhwIjoxNjY1NjQ5MDE2LCJpYXQiOjE2NjU2MjAyMTYsImlzcyI6Ik5vbWVRdWFscXVlciIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QifQ.HHPG9Cd0pScC5bYuoqB4nIg4CXTXgA_aXn6HbyLGuu4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"userName\": \"user.name.child\",\r\n  \"password\": \"user.name.child\",\r\n  \"userEmail\": \"user.name.child@host.com\",\r\n  \"fullName\": \"user name child\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44337/api/v3/User/register-user",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44337",
+					"path": [
+						"api",
+						"v3",
+						"User",
+						"register-user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change Password",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VyTmFtZSI6InVzZXIubmFtZSIsIlVzZXJFbWFpbCI6InVzZXIubmFtZUBob3N0LmNvbSIsIkZ1bGxOYW1lIjoiVXNlciBOYW1lIiwiR3JvdXBJZCI6ImQ2ZTRhNjkwLTc3ZmMtNGMyOC04ZmI3LTU0MjRlZWQyNzgwNyIsIlRlbmFudElkIjoiODQ4ZDgxNDYtYTI1Zi00ODdkLWIxNWQtODU3ZWY2ZDMwMmQ4IiwiQ3JlYXRlZCI6IjEzLzEwLzIwMjIgMDA6MDg6MzIiLCJNb2RpZmllZCI6IjEzLzEwLzIwMjIgMDA6MDg6MzIiLCJTdGF0dXMiOiJEcmFmdCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvZXhwaXJhdGlvbiI6IjEzLzEwLzIwMjIgMDg6MTY6NTYiLCJuYW1laWQiOiJkNmNlYjlmNi02OWVlLTRiZDktOWFhYy00ZGNiYjUxNjlhNTciLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zeXN0ZW0iOiI0OTRBQUQ4QUUxNEQyRjQxNDVCQUIzMjc1NDNGMzFGMCIsIm5iZiI6MTY2NTYyMDIxNiwiZXhwIjoxNjY1NjQ5MDE2LCJpYXQiOjE2NjU2MjAyMTYsImlzcyI6Ik5vbWVRdWFscXVlciIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3QifQ.HHPG9Cd0pScC5bYuoqB4nIg4CXTXgA_aXn6HbyLGuu4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"oldPassword\": \"123ABCabc123\",\r\n  \"newPassword\": \"123ABCabc\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44337/api/v3/User/change-password",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44337",
+					"path": [
+						"api",
+						"v3",
+						"User",
+						"change-password"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

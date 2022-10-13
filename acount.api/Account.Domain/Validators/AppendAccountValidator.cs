@@ -20,8 +20,6 @@ namespace Account.Domain.Validators
 
         private void MapperValidation()
         {
-            //RuleFor(f => f.Status)
-            //    .NotEqual(StatusRecord.Draft).WithMessage(Resources.InvalidStatusNewAccount).WithErrorCode(HandlesCode.BadRequest.ToString());
             RuleFor(f => f.UserName)
                 .NotEmpty().MinimumLength(8).MaximumLength(25).WithMessage(Resources.UsernameLimits).WithErrorCode(HandlesCode.BadRequest.ToString());
             RuleFor(f => f.FullName)

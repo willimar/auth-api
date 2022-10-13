@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="InvalidChangePassword" xml:space="preserve">
+    <value>Has a problem to change password.</value>
+  </data>
   <data name="InvalidEmail" xml:space="preserve">
     <value>Email has be [nome]@[host].[com] for exemple.</value>
+  </data>
+  <data name="InvalidGroupId" xml:space="preserve">
+    <value>Ivalid group to user.</value>
   </data>
   <data name="InvalidPasswordSets" xml:space="preserve">
     <value>Invalid password sets.</value>
@@ -128,6 +134,12 @@
   </data>
   <data name="InvalidStatusNewAccount" xml:space="preserve">
     <value>New account has not be draft record.</value>
+  </data>
+  <data name="InvalidTenantId" xml:space="preserve">
+    <value>Invalid tentant to user.</value>
+  </data>
+  <data name="InvalidUserId" xml:space="preserve">
+    <value>Invalid Id value to user.</value>
   </data>
   <data name="InvalidUserName" xml:space="preserve">
     <value>Invalid user name.</value>

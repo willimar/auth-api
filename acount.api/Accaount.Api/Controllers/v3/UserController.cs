@@ -59,9 +59,7 @@ namespace Account.Api.Controllers.v3
         [HttpPost("register-user")]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
         [Authorize]
-        public async ValueTask<IActionResult> RegisterUser([FromBody] AppendAccount appendAccount, 
-            [FromServices] IUser user,
-            [FromServices] UserMapperConfig userMapperConfig)
+        public async ValueTask<IActionResult> RegisterUser([FromBody] AppendAccount appendAccount, [FromServices] IUser user, [FromServices] UserMapperConfig userMapperConfig)
         {
             try
             {
@@ -89,12 +87,35 @@ namespace Account.Api.Controllers.v3
             }
         }
 
-        [HttpPut("change")]
+        [HttpPut("change-password")]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
         [Authorize]
-        public async ValueTask<IActionResult> Change()
+        public async ValueTask<IActionResult> Change([FromBody] ChangePassword changePassword, [FromServices] IUser user)
         {
-            return await ValueTask.FromResult(Ok());
+            try
+            {
+                changePassword.UserId = user.Id;
+                changePassword.TenantId = user.TenantId;
+                changePassword.GroupId = user.GroupId;
+
+                var response = await this._userCommand.ChangePassword<ChangePasswordValidator>(changePassword, new CancellationToken());
+
+                response ??= new List<IHandleMessage>();
+                if (response.Any(x => (int)x.Code >= 400 && (int)x.Code < 500))
+                {
+                    return await ValueTask.FromResult(BadRequest(response));
+                }
+                else if (response.Any(x => (int)x.Code >= 500 && (int)x.Code < 600))
+                {
+                    return await ValueTask.FromResult(StatusCode(500, response));
+                }
+
+                return await ValueTask.FromResult(Ok(response));
+            }
+            catch (Exception e)
+            {
+                return await ValueTask.FromResult(StatusCode(500, e.Message));
+            }
         }
     }
 }

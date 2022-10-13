@@ -18,21 +18,9 @@ namespace Account.Domain.Mappers
     {
         public void Mapper(IMapperConfigurationExpression profile)
         {
+            SetAppendAccountAppendUserMapper(profile);
             SetAppendAccountMapper(profile);
             SetAppendUserMapper(profile);
-        }
-
-        private static void SetAppendAccountMapper(IMapperConfigurationExpression profile)
-        {
-            profile.CreateMap<AppendAccount, User>()
-                .ForMember(dest => dest.FullName, map => map.MapFrom(source => source.FullName))
-                .ForMember(dest => dest.UserEmail, map => map.MapFrom(source => source.UserEmail))
-                .ForMember(dest => dest.UserName, map => map.MapFrom(source => source.UserName))
-                .ForMember(dest => dest.TenantId, map => map.MapFrom(source => Guid.NewGuid()))
-                .ForMember(dest => dest.GroupId, map => map.MapFrom(source => Guid.NewGuid()))
-                .ForMember(dest => dest.Status, map => map.MapFrom(source => StatusRecord.Draft))
-                .AfterMap(AppendUserAfterMapper)
-                ;
         }
 
         private static void SetAppendUserMapper(IMapperConfigurationExpression profile)
@@ -43,6 +31,28 @@ namespace Account.Domain.Mappers
                 .ForMember(dest => dest.UserName, map => map.MapFrom(source => source.UserName))
                 .ForMember(dest => dest.TenantId, map => map.MapFrom(source => source.TenantId))
                 .ForMember(dest => dest.GroupId, map => map.MapFrom(source => source.GroupId))
+                .ForMember(dest => dest.Status, map => map.MapFrom(source => StatusRecord.Draft))
+                .AfterMap(AppendUserAfterMapper)
+                ;
+        }
+
+        private static void SetAppendAccountAppendUserMapper(IMapperConfigurationExpression profile)
+        {
+            profile.CreateMap<AppendAccount, AppendUser>()
+                .ForMember(dest => dest.FullName, map => map.MapFrom(source => source.FullName))
+                .ForMember(dest => dest.UserEmail, map => map.MapFrom(source => source.UserEmail))
+                .ForMember(dest => dest.UserName, map => map.MapFrom(source => source.UserName))
+                ;
+        }
+
+        private static void SetAppendAccountMapper(IMapperConfigurationExpression profile)
+        {
+            profile.CreateMap<AppendAccount, User>()
+                .ForMember(dest => dest.FullName, map => map.MapFrom(source => source.FullName))
+                .ForMember(dest => dest.UserEmail, map => map.MapFrom(source => source.UserEmail))
+                .ForMember(dest => dest.UserName, map => map.MapFrom(source => source.UserName))
+                .ForMember(dest => dest.TenantId, map => map.MapFrom(source => Guid.NewGuid()))
+                .ForMember(dest => dest.GroupId, map => map.MapFrom(source => Guid.NewGuid()))
                 .ForMember(dest => dest.Status, map => map.MapFrom(source => StatusRecord.Draft))
                 .AfterMap(AppendUserAfterMapper)
                 ;

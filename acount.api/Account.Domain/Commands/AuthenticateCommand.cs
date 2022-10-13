@@ -23,13 +23,11 @@ namespace Account.Domain.Commands
             this._jwtOptions = jwtOptions;
         }
 
-        public async ValueTask<(string token, string refreshToken, bool isValid)>
-            Authenticate(AutenticateUser autenticateUser)
+        public async ValueTask<(string token, string refreshToken, bool isValid)>Authenticate(AutenticateUser autenticateUser)
         {
             (string token, string refreshToken, bool isValid) response = new();
 
-            var users = this._repositoryUser
-                .GetData(x => x.UserName == autenticateUser.Login || x.UserEmail == autenticateUser.Login).ToList();
+            var users = this._repositoryUser.GetData(x => x.UserName == autenticateUser.Login || x.UserEmail == autenticateUser.Login).ToList();
 
             response.isValid = false;
 
