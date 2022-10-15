@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Account.Api.Controllers.v3
 {
-    [EnableCors(SwaggerSetup.AllowAnyOrigins)]
+    //[EnableCors(SwaggerSetup.AllowAnyOrigins)]
     [IgnoreAntiforgeryToken(Order = 1001)]
     [ApiExplorerSettings(GroupName = "Users")]
     [ApiVersion("3", Deprecated = false)]
