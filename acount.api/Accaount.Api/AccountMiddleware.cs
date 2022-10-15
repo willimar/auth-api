@@ -40,7 +40,7 @@ namespace Account.Api
                     await this.AuthenticateSet(httpContext);
                 }
 
-                await this.RequestRegister(httpContext, bodyContent, "RequestInfo");                
+                await this.RequestRegister(httpContext, bodyContent, "RequestInfo");
             }
             catch (Exception e)
             {
@@ -65,22 +65,23 @@ namespace Account.Api
         {
             httpContext.Request.EnableBuffering();
 
-            using (var reader = new StreamReader(httpContext.Request.Body, encoding: Encoding.UTF8))
-            {
-                var response = await reader.ReadToEndAsync();
-                httpContext.Request.Body.Position = 0;
+            using var body = new MemoryStream();
+            httpContext.Request.Body.CopyTo(body);
+            using var reader = new StreamReader(body, encoding: Encoding.UTF8);
 
-                return response;
-            }
+            var response = await reader.ReadToEndAsync();
+            httpContext.Request.Body.Position = 0;
+
+            return response;
         }
 
         /// <summary>
         /// Registrando log de exceções
         /// </summary>
         private async Task ExceptionRegister(
-            string exceptionName, 
-            string exceptionMessage, 
-            string? exceptionTrace, 
+            string exceptionName,
+            string exceptionMessage,
+            string? exceptionTrace,
             string? bodyContent,
             string? innerExceptionMessage,
             string? innerExceptionTrace)
@@ -107,7 +108,7 @@ namespace Account.Api
 
             bodyContent = isPasswordInfo ? string.Empty : bodyContent;
 
-            var obj = new  
+            var obj = new
             {
                 httpContext.Request.Path,
                 httpContext.Request.Method,
@@ -185,7 +186,7 @@ namespace Account.Api
                     Thread.CurrentThread.CurrentUICulture = new CultureInfo(culture);
                 }
             }
-            catch 
+            catch
             {
                 // Se houver problema ao setar a cultura vai ser ignorado.
             }
