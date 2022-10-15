@@ -22,6 +22,7 @@ namespace Account.Api.Controllers.v3
         }
 
         [HttpPost("authenticate")]
+        [IgnoreAntiforgeryToken(Order = 1001)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
         [AllowAnonymous]
         public async ValueTask<IActionResult> Authenticate([FromBody] AutenticateUser autenticateUser)

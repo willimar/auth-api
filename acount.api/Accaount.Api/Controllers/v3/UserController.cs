@@ -30,6 +30,7 @@ namespace Account.Api.Controllers.v3
         /// <param name="appendAccount"></param>
         /// <returns></returns>
         [HttpPost("register-account")]
+        [IgnoreAntiforgeryToken(Order = 1001)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
         [AllowAnonymous]
         public async ValueTask<IActionResult> RegisterAccount([FromBody] AppendAccount appendAccount)
