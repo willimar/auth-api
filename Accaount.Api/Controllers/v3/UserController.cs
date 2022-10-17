@@ -89,6 +89,7 @@ namespace Account.Api.Controllers.v3
         }
 
         [HttpPut("change-password")]
+        [IgnoreAntiforgeryToken(Order = 1001)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
         [Authorize]
         public async ValueTask<IActionResult> Change([FromBody] ChangePassword changePassword, [FromServices] IUser user)
