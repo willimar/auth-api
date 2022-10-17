@@ -15,6 +15,8 @@ namespace Account.Api.Controllers.v3
     [ApiController]
     [Produces("application/json")]
     [Route("api/v{version:apiVersion}/[controller]/")]
+    [IgnoreAntiforgeryToken(Order = 1001)]
+    [AllowAnonymous]
     public class UserController : ControllerBase
     {
         private readonly UserCommand _userCommand;
@@ -30,9 +32,7 @@ namespace Account.Api.Controllers.v3
         /// <param name="appendAccount"></param>
         /// <returns></returns>
         [HttpPost("register-account")]
-        [IgnoreAntiforgeryToken(Order = 1001)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
-        [AllowAnonymous]
         public async ValueTask<IActionResult> RegisterAccount([FromBody] AppendAccount appendAccount)
         {
             try
@@ -89,7 +89,6 @@ namespace Account.Api.Controllers.v3
         }
 
         [HttpPut("change-password")]
-        [IgnoreAntiforgeryToken(Order = 1001)]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
         [Authorize]
         public async ValueTask<IActionResult> Change([FromBody] ChangePassword changePassword, [FromServices] IUser user)
