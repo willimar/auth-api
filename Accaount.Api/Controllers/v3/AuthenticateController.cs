@@ -39,7 +39,7 @@ namespace Account.Api.Controllers.v3
                 this.Response.Headers.Authorization = $"Bearer {response.token}";
                 this.Response.Headers.ProxyAuthorization = $"Bearer {response.refreshToken}";
 
-                return await ValueTask.FromResult(Ok());
+                return await ValueTask.FromResult(Ok(new { this.Response.Headers.Authorization, this.Response.Headers.ProxyAuthorization }));
             }
             else
             {
@@ -64,7 +64,7 @@ namespace Account.Api.Controllers.v3
                 this.Response.Headers.Authorization = $"Bearer {response.token}";
                 this.Response.Headers.ProxyAuthorization = $"Bearer {response.refreshToken}";
 
-                return await ValueTask.FromResult(Ok());
+                return await ValueTask.FromResult(Ok(new { this.Response.Headers.Authorization, this.Response.Headers.ProxyAuthorization }));
             }
             else
             {
