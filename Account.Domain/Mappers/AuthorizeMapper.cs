@@ -30,7 +30,7 @@ namespace Account.Domain.Mappers
 
         private void SetChangeAuthorizeMapper(IMapperConfigurationExpression profile)
         {
-            profile.CreateMap<AppendAuthorize, Authorize>()
+            profile.CreateMap<ChangeAuthorize, Authorize>()
                 .ForMember(dest => dest.Name, map => map.Ignore())
                 .ForMember(dest => dest.Description, map => map.MapFrom(source => source.Description))
                 .ForMember(dest => dest.Status, map => map.MapFrom(source => StatusRecord.Active))
