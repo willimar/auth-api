@@ -117,8 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AuthorizateDescriptionLimits" xml:space="preserve">
+    <value>Name has limit between 8 and 100 characters.</value>
+  </data>
+  <data name="AuthorizatenameLimits" xml:space="preserve">
+    <value>Name has limit between 8 and 50 characters.</value>
+  </data>
   <data name="ChangePasswordError" xml:space="preserve">
     <value>Has a problem to change password data.</value>
+  </data>
+  <data name="ChangeRecordError" xml:space="preserve">
+    <value>Has a problem to change record data.</value>
   </data>
   <data name="InvalidChangePassword" xml:space="preserve">
     <value>Has a problem to change password.</value>
@@ -152,6 +161,15 @@
   </data>
   <data name="PasswordChanged" xml:space="preserve">
     <value>Password changed.</value>
+  </data>
+  <data name="RecordChanged" xml:space="preserve">
+    <value>Record changed.</value>
+  </data>
+  <data name="RegisterNotFoundException" xml:space="preserve">
+    <value>Register was not found.</value>
+  </data>
+  <data name="ThereIsAuthorizate" xml:space="preserve">
+    <value>There is authorizate name.</value>
   </data>
   <data name="ThereIsUser" xml:space="preserve">
     <value>There is user.</value>

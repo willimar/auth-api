@@ -61,11 +61,38 @@ namespace Account.Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name has limit between 8 and 100 characters..
+        /// </summary>
+        internal static string AuthorizateDescriptionLimits {
+            get {
+                return ResourceManager.GetString("AuthorizateDescriptionLimits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name has limit between 8 and 50 characters..
+        /// </summary>
+        internal static string AuthorizatenameLimits {
+            get {
+                return ResourceManager.GetString("AuthorizatenameLimits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Has a problem to change password data..
         /// </summary>
         internal static string ChangePasswordError {
             get {
                 return ResourceManager.GetString("ChangePasswordError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Has a problem to change record data..
+        /// </summary>
+        internal static string ChangeRecordError {
+            get {
+                return ResourceManager.GetString("ChangeRecordError", resourceCulture);
             }
         }
         
@@ -165,6 +192,33 @@ namespace Account.Domain.Properties {
         internal static string PasswordChanged {
             get {
                 return ResourceManager.GetString("PasswordChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Record changed..
+        /// </summary>
+        internal static string RecordChanged {
+            get {
+                return ResourceManager.GetString("RecordChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Register was not found..
+        /// </summary>
+        internal static string RegisterNotFoundException {
+            get {
+                return ResourceManager.GetString("RegisterNotFoundException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is authorizate name..
+        /// </summary>
+        internal static string ThereIsAuthorizate {
+            get {
+                return ResourceManager.GetString("ThereIsAuthorizate", resourceCulture);
             }
         }
         

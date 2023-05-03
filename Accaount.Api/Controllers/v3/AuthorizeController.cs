@@ -1,69 +1,42 @@
 ﻿using Account.Domain.Commands;
 using Account.Domain.Commands.Dtos;
+using Account.Domain.Queries;
 using Account.Domain.Validators;
-using Auvo.Financeiro.Application.Mappers.Fornecedor;
 using DataCore.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson.IO;
+using System.Text.Json;
 
 namespace Account.Api.Controllers.v3
 {
     [EnableCors(SwaggerSetup.AllowAnyOrigins)]
-    [ApiExplorerSettings(GroupName = "Users")]
+    [ApiExplorerSettings(GroupName = "Athorization")]
     [ApiVersion("3", Deprecated = false)]
     [ApiController]
     [Produces("application/json")]
     [Route("api/v{version:apiVersion}/[controller]/")]
     [IgnoreAntiforgeryToken(Order = 1001)]
-    [AllowAnonymous]
-    public class UserController : ControllerBase
+    [Authorize]
+    public class AuthorizeController : ControllerBase
     {
-        private readonly UserCommand _userCommand;
+        private readonly AuthorizateCommand _authorizateCommand;
+        private readonly AuthorizeQuery _authorizeQuery;
 
-        public UserController(UserCommand userCommand)
+        public AuthorizeController(AuthorizateCommand authorizateCommand, AuthorizeQuery authorizeQuery)
         {
-            this._userCommand = userCommand;
+            this._authorizateCommand = authorizateCommand;
+            this._authorizeQuery = authorizeQuery;
         }
 
-        [HttpPost("register-account")]
+        [HttpPost("register-authorization")]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
-        public async ValueTask<IActionResult> RegisterAccount([FromBody] AppendAccount appendAccount)
+        public async ValueTask<IActionResult> RegisterAuthorize([FromBody] AppendAuthorize appendAuthorize)
         {
             try
             {
-                var response = await this._userCommand.Append<AppendAccountValidator>(appendAccount, new CancellationToken());
-
-                response ??= new List<IHandleMessage>();
-                if (response.Any(x => (int)x.Code >= 400 && (int)x.Code < 500))
-                {
-                    return await ValueTask.FromResult(BadRequest(response));
-                }
-                else if(response.Any(x => (int)x.Code >= 500 && (int)x.Code < 600))
-                {
-                    return await ValueTask.FromResult(StatusCode(500, response));
-                }
-
-                return await ValueTask.FromResult(Ok(response));
-            }
-            catch (Exception e)
-            {
-                return await ValueTask.FromResult(StatusCode(500, e.Message));
-            }
-        }
-
-        [HttpPost("register-user")]
-        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
-        [Authorize]
-        public async ValueTask<IActionResult> RegisterUser([FromBody] AppendAccount appendAccount, [FromServices] IUser user, [FromServices] UserMapperConfig userMapperConfig)
-        {
-            try
-            {
-                var appendUser = userMapperConfig.CreateMapper().Map<AppendUser>(appendAccount);
-                appendUser.TenantId = user.TenantId;
-                appendUser.GroupId = user.GroupId;
-
-                var response = await this._userCommand.Append<AppendUserValidator>(appendUser, new CancellationToken());
+                var response = await this._authorizateCommand.Append<AppendAuthorizateValidator>(appendAuthorize, new CancellationToken());
 
                 response ??= new List<IHandleMessage>();
                 if (response.Any(x => (int)x.Code >= 400 && (int)x.Code < 500))
@@ -83,18 +56,13 @@ namespace Account.Api.Controllers.v3
             }
         }
 
-        [HttpPut("change-password")]
+        [HttpPut("change-authorization")]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
-        [Authorize]
-        public async ValueTask<IActionResult> Change([FromBody] ChangePassword changePassword, [FromServices] IUser user)
+        public async ValueTask<IActionResult> ChangeAuthorize([FromBody] ChangeAuthorize appendAuthorize)
         {
             try
             {
-                changePassword.UserId = user.Id;
-                changePassword.TenantId = user.TenantId;
-                changePassword.GroupId = user.GroupId;
-
-                var response = await this._userCommand.ChangePassword<ChangePasswordValidator>(changePassword, new CancellationToken());
+                var response = await this._authorizateCommand.Change<ChangeAuthorizateValidator>(appendAuthorize, new CancellationToken());
 
                 response ??= new List<IHandleMessage>();
                 if (response.Any(x => (int)x.Code >= 400 && (int)x.Code < 500))
@@ -107,6 +75,53 @@ namespace Account.Api.Controllers.v3
                 }
 
                 return await ValueTask.FromResult(Ok(response));
+            }
+            catch (Exception e)
+            {
+                return await ValueTask.FromResult(StatusCode(500, e.Message));
+            }
+        }
+
+        [HttpDelete("remove-authorization")]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Delete))]
+        public async ValueTask<IActionResult> RemoveAuthorize([FromBody] RemoveAuthorize appendAuthorize)
+        {
+            try
+            {
+                var response = await this._authorizateCommand.Remove(appendAuthorize, new CancellationToken());
+
+                response ??= new List<IHandleMessage>();
+                if (response.Any(x => (int)x.Code >= 400 && (int)x.Code < 500))
+                {
+                    return await ValueTask.FromResult(BadRequest(response));
+                }
+                else if (response.Any(x => (int)x.Code >= 500 && (int)x.Code < 600))
+                {
+                    return await ValueTask.FromResult(StatusCode(500, response));
+                }
+
+                return await ValueTask.FromResult(Ok(response));
+            }
+            catch (Exception e)
+            {
+                return await ValueTask.FromResult(StatusCode(500, e.Message));
+            }
+        }
+
+        [HttpGet("get-authorizations")]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
+        public async ValueTask<IActionResult> GetAuthorize()
+        {
+            try
+            {
+                var response = await this._authorizeQuery.GetAuthorizations();
+
+                if (!response.Any())
+                {
+                    return await ValueTask.FromResult(StatusCode(204));
+                }
+
+                return await ValueTask.FromResult(StatusCode(200, response));
             }
             catch (Exception e)
             {

@@ -74,7 +74,7 @@ namespace System
                 return connectionString;
             }
 
-            connectionString = $"mongodb+srv://{userName}:{userPassword}@{hostUrl}/?retryWrites=true&w=majority";
+            connectionString = $"mongodb://{userName}:{userPassword}@{hostUrl}/?retryWrites=true&w=majority";
             return connectionString;
         }
     }
