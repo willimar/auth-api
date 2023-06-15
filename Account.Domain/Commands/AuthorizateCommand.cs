@@ -2,17 +2,9 @@
 using Account.Domain.Entities;
 using Account.Domain.Mappers;
 using Account.Domain.Properties;
-using Auvo.Financeiro.Application.Mappers.Fornecedor;
 using DataCore.Domain.Concrets;
 using DataCore.Domain.Enumerators;
 using DataCore.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Account.Domain.Commands
 {
@@ -20,20 +12,22 @@ namespace Account.Domain.Commands
     {
         private readonly IRepositoryWrite<Authorize> _repositoryWrite;
         private readonly IRepositoryRead<Authorize> _repositoryRead;
-        private readonly AuthorizeMapperConfig _authorizeMapperConfig;
+        private readonly AppendAuthorizeMapper _appendAuthorizeMapper;
+        private readonly ChangeAuthorizeMapper _changeAuthorizeMapper;
         private readonly IServiceProvider _service;
 
-        public AuthorizateCommand(IRepositoryWrite<Authorize> repositoryWrite, IRepositoryRead<Authorize> repositoryRead, AuthorizeMapperConfig authorizeMapperConfig, IServiceProvider service)
+        public AuthorizateCommand(IRepositoryWrite<Authorize> repositoryWrite, IRepositoryRead<Authorize> repositoryRead, AppendAuthorizeMapper appendAuthorizeMapper, ChangeAuthorizeMapper changeAuthorizeMapper, IServiceProvider service)
         {
             this._repositoryWrite = repositoryWrite;
             this._repositoryRead = repositoryRead;
-            this._authorizeMapperConfig = authorizeMapperConfig;
+            this._appendAuthorizeMapper = appendAuthorizeMapper;
+            this._changeAuthorizeMapper = changeAuthorizeMapper;
             this._service = service;
         }
 
         public async ValueTask<IEnumerable<IHandleMessage>?> Append<TValidator>(AppendAuthorize append, CancellationToken cancellationToken) where TValidator : class, IValidator<Authorize>
         {
-            var authorize = this._authorizeMapperConfig.CreateMapper().Map<Authorize>(append);
+            var authorize = this._appendAuthorizeMapper.Map(append);
             var validator = this._service.GetService(typeof(TValidator)) as TValidator;
 
             var response = (await this._repositoryWrite.AppenData(authorize, validator, cancellationToken))?.ToList();
@@ -60,7 +54,6 @@ namespace Account.Domain.Commands
         public async ValueTask<IEnumerable<IHandleMessage>?> Change<TValidator>(ChangeAuthorize changeAuthorize, CancellationToken cancellationToken) where TValidator : class, IValidator<Authorize>
         {
             var authorize = this._repositoryRead.GetData(x => x.Name.ToLower() == changeAuthorize.Name.ToLower()).FirstOrDefault();
-            authorize = this._authorizeMapperConfig.CreateMapper().Map(changeAuthorize, authorize);
             IEnumerable<IHandleMessage> response = new List<IHandleMessage>();
 
             if (authorize is null)
@@ -69,6 +62,8 @@ namespace Account.Domain.Commands
                 return response;
             }
 
+            _ = this._changeAuthorizeMapper.Map(changeAuthorize, authorize);
+            
             var validator = this._service.GetService(typeof(TValidator)) as TValidator;
             response = await this._repositoryWrite.UpdateData(authorize, validator, cancellationToken);
 

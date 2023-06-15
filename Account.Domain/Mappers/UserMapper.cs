@@ -14,18 +14,23 @@ using System.Threading.Tasks;
 
 namespace Account.Domain.Mappers
 {
-    public class UserMapper : IMapperEntity
+    public class AppendAccountAppendUserMapper : MapperProfile<AppendAccount, AppendUser>
     {
-        public void Mapper(IMapperConfigurationExpression profile)
+        protected override void ForMemberMapper(IMappingExpression<AppendAccount, AppendUser> mapping)
         {
-            SetAppendAccountAppendUserMapper(profile);
-            SetAppendAccountMapper(profile);
-            SetAppendUserMapper(profile);
+            _ = mapping
+                .ForMember(dest => dest.FullName, map => map.MapFrom(source => source.FullName))
+                .ForMember(dest => dest.UserEmail, map => map.MapFrom(source => source.UserEmail))
+                .ForMember(dest => dest.UserName, map => map.MapFrom(source => source.UserName))
+                ;
         }
+    }
 
-        private static void SetAppendUserMapper(IMapperConfigurationExpression profile)
+    public class AppendUserMapper : MapperProfile<AppendUser, User>
+    {
+        protected override void ForMemberMapper(IMappingExpression<AppendUser, User> mapping)
         {
-            profile.CreateMap<AppendUser, User>()
+            _ = mapping
                 .ForMember(dest => dest.FullName, map => map.MapFrom(source => source.FullName))
                 .ForMember(dest => dest.UserEmail, map => map.MapFrom(source => source.UserEmail))
                 .ForMember(dest => dest.UserName, map => map.MapFrom(source => source.UserName))
@@ -36,18 +41,19 @@ namespace Account.Domain.Mappers
                 ;
         }
 
-        private static void SetAppendAccountAppendUserMapper(IMapperConfigurationExpression profile)
+        private static void AppendUserAfterMapper(AppendAccount source, User dest)
         {
-            profile.CreateMap<AppendAccount, AppendUser>()
-                .ForMember(dest => dest.FullName, map => map.MapFrom(source => source.FullName))
-                .ForMember(dest => dest.UserEmail, map => map.MapFrom(source => source.UserEmail))
-                .ForMember(dest => dest.UserName, map => map.MapFrom(source => source.UserName))
-                ;
-        }
+            var hashList = dest.GetHashTo(source.Password);
 
-        private static void SetAppendAccountMapper(IMapperConfigurationExpression profile)
+            hashList.ToList().ForEach(item => dest.UserHashes.Add(new UserHash { Value = item }));
+        }
+    }
+
+    public class AppendAccountMapper : MapperProfile<AppendAccount, User>
+    {
+        protected override void ForMemberMapper(IMappingExpression<AppendAccount, User> mapping)
         {
-            profile.CreateMap<AppendAccount, User>()
+            _ = mapping
                 .ForMember(dest => dest.FullName, map => map.MapFrom(source => source.FullName))
                 .ForMember(dest => dest.UserEmail, map => map.MapFrom(source => source.UserEmail))
                 .ForMember(dest => dest.UserName, map => map.MapFrom(source => source.UserName))

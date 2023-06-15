@@ -1,8 +1,8 @@
 ﻿using Account.Domain.Commands.Dtos;
 using Account.Domain.Entities;
 using Account.Domain.Extensions;
+using Account.Domain.Mappers;
 using Account.Domain.Properties;
-using Auvo.Financeiro.Application.Mappers.Fornecedor;
 using DataCore.Domain.Concrets;
 using DataCore.Domain.Enumerators;
 using DataCore.Domain.Interfaces;
@@ -13,20 +13,22 @@ namespace Account.Domain.Commands
     {
         private readonly IRepositoryWrite<User> _writeUser;
         private readonly IRepositoryRead<User> _readUser;
-        private readonly UserMapperConfig _userMapper;
+        private readonly AppendAccountMapper _appendAccountMapper;
+        private readonly AppendUserMapper _appendUserMapper;
         private readonly IServiceProvider _service;
 
-        public UserCommand(IRepositoryWrite<User> writeUser, IRepositoryRead<User> readUser, UserMapperConfig userMapper, IServiceProvider service)
+        public UserCommand(IRepositoryWrite<User> writeUser, IRepositoryRead<User> readUser, AppendAccountMapper appendAccountMapper, AppendUserMapper appendUserMapper, IServiceProvider service)
         {
             this._writeUser = writeUser;
             this._readUser = readUser;
-            this._userMapper = userMapper;
+            this._appendAccountMapper = appendAccountMapper;
+            this._appendUserMapper = appendUserMapper;
             this._service = service;
         }
 
         public async ValueTask<IEnumerable<IHandleMessage>?> Append<TValidator>(AppendAccount append, CancellationToken cancellationToken) where TValidator : class, IValidator<User>
         {
-            var user = this._userMapper.CreateMapper().Map<User>(append);
+            var user = this._appendAccountMapper.Map(append);
 
             var validator = this._service.GetService(typeof(TValidator)) as TValidator;
             var response = (await this._writeUser.AppenData(user, validator, cancellationToken))?.ToList();

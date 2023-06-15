@@ -31,7 +31,7 @@ namespace System
 
         public static IDataProviderWrite GetDataProviderWrite(this IServiceProvider serviceProvider, IConfiguration configuration)
         {
-            var dataBaseName = configuration.ReadConfig<string>(MongoWriterSection, MongoWriterDataBase);
+            var dataBaseName = configuration.ReadConfig<string>(MongoWriterSection, MongoWriterDataBase) ?? string.Empty;
             IMongoClient mongoClient = configuration.GetMongoClient(MongoWriterSection);
             IDataProviderWrite response = new DataProviderWriter(mongoClient, dataBaseName) { };
 
@@ -40,7 +40,7 @@ namespace System
 
         public static IDataProviderRead GetDataProviderReader(this IServiceProvider serviceProvider, IConfiguration configuration)
         {
-            var dataBaseName = configuration.ReadConfig<string>(MongoReaderSection, MongoReaderDataBase);
+            var dataBaseName = configuration.ReadConfig<string>(MongoReaderSection, MongoReaderDataBase) ?? string.Empty;
             IMongoClient mongoClient = configuration.GetMongoClient(MongoReaderSection);
             IDataProviderRead response = new DataProviderReader(mongoClient, dataBaseName) { };
 

@@ -1,13 +1,9 @@
 ﻿using DataCore.Domain.Enumerators;
 using DataCore.Domain.Interfaces;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.DataProtection.KeyManagement;
-using Microsoft.AspNetCore.Http;
 using DataCore.Jwt.Extensions;
 using DataCore.Jwt.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
-using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 
 namespace Account.Api.Extensions
 {
@@ -79,8 +75,8 @@ namespace Account.Api.Extensions
                 this.Expires = configuration.ReadConfig<double>(jwt, "Expires");
                 this.ExpiresRefreshToken = configuration.ReadConfig<double>(jwt, "ExpiresRefreshToken");
                 this.SecurityAlgorithm = SecurityAlgorithms.HmacSha256Signature;
-                this.Issuer = configuration.ReadConfig<string>(jwt, "Issuer");
-                this.Audience = configuration.ReadConfig<string>(jwt, "Audience");
+                this.Issuer = configuration.ReadConfig<string>(jwt, "Issuer") ?? string.Empty;
+                this.Audience = configuration.ReadConfig<string>(jwt, "Audience") ?? string.Empty;
             }
         }
 

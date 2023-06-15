@@ -4,7 +4,6 @@ using Account.Domain.Mappers;
 using Account.Domain.Queries;
 using Account.Domain.Repositories;
 using Account.Domain.Validators;
-using Auvo.Financeiro.Application.Mappers.Fornecedor;
 using DataCore.Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,11 +23,12 @@ namespace Account.Domain.Setups
             services.AddScoped<IRepositoryRead<User>, UserRepositoryRead>();
             services.AddScoped<IRepositoryRead<Authorize>, AuthorizeRepositoryRead>();
 
-            services.AddScoped<UserMapperConfig>();
-            services.AddScoped<AuthorizeMapperConfig>();
+            services.AddScoped<AppendAuthorizeMapper>();
+            services.AddScoped<ChangeAuthorizeMapper>();
 
-            services.AddScoped<UserMapper>();
-            services.AddScoped<AuthorizeMapper>();
+            services.AddScoped<AppendAccountAppendUserMapper>();
+            services.AddScoped<AppendUserMapper>();
+            services.AddScoped<AppendAccountMapper>();
 
             services.AddScoped<AppendAccountValidator>();
             services.AddScoped<AppendAuthorizateValidator>();

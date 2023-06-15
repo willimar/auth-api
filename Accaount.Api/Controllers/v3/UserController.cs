@@ -1,7 +1,7 @@
 ﻿using Account.Domain.Commands;
 using Account.Domain.Commands.Dtos;
+using Account.Domain.Mappers;
 using Account.Domain.Validators;
-using Auvo.Financeiro.Application.Mappers.Fornecedor;
 using DataCore.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -55,11 +55,11 @@ namespace Account.Api.Controllers.v3
         [HttpPost("register-user")]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
         [Authorize]
-        public async ValueTask<IActionResult> RegisterUser([FromBody] AppendAccount appendAccount, [FromServices] IUser user, [FromServices] UserMapperConfig userMapperConfig)
+        public async ValueTask<IActionResult> RegisterUser([FromBody] AppendAccount appendAccount, [FromServices] IUser user, [FromServices] AppendAccountAppendUserMapper userMapperConfig)
         {
             try
             {
-                var appendUser = userMapperConfig.CreateMapper().Map<AppendUser>(appendAccount);
+                var appendUser = userMapperConfig.Map(appendAccount);
                 appendUser.TenantId = user.TenantId;
                 appendUser.GroupId = user.GroupId;
 

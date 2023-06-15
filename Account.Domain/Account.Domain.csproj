@@ -7,10 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DataCore.Jwt" Version="2.1.1.14" />
-    <PackageReference Include="DataCore.Mapper" Version="2.1.1.2" />
-    <PackageReference Include="DataCore.Provider.MongoDb" Version="2.1.1.6" />
-    <PackageReference Include="FluentValidation" Version="11.2.2" />
+    <PackageReference Include="DataCore.Jwt" Version="2.1.1.18" />
+    <PackageReference Include="DataCore.Mapper" Version="3.1.1.5" />
+    <PackageReference Include="DataCore.Provider.MongoDb" Version="2.1.1.9" />
+    <PackageReference Include="FluentValidation" Version="11.5.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
   </ItemGroup>
 
