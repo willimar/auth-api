@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using System;
 using System.Globalization;
 using System.Net;
 using System.Text;

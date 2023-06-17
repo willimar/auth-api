@@ -1,7 +1,6 @@
 ﻿using Account.Domain.Commands.Dtos;
 using Account.Domain.Entities;
 using DataCore.Domain.Interfaces;
-using System.Xml.Linq;
 
 namespace Account.Domain.Queries
 {
@@ -9,7 +8,7 @@ namespace Account.Domain.Queries
     {
         private readonly IRepositoryRead<Authorize> _repositoryAuthorize;
 
-        public AuthorizeQuery(IRepositoryRead<Authorize> repositoryAuthorize) 
+        public AuthorizeQuery(IRepositoryRead<Authorize> repositoryAuthorize)
         {
             this._repositoryAuthorize = repositoryAuthorize;
         }
@@ -23,8 +22,8 @@ namespace Account.Domain.Queries
 
         private static ChangeAuthorize GetItem(Authorize item)
         {
-            ChangeAuthorize response = new() 
-            { 
+            ChangeAuthorize response = new()
+            {
                 Description = item.Description,
                 Name = item.Name,
             };

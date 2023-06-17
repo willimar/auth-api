@@ -16,7 +16,7 @@ namespace Account.Api.Controllers.v3
     [Produces("application/json")]
     [Route("api/v{version:apiVersion}/[controller]/")]
     [IgnoreAntiforgeryToken(Order = 1001)]
-    [AllowAnonymous]
+    [Authorize]
     public class UserController : ControllerBase
     {
         private readonly UserCommand _userCommand;
@@ -28,18 +28,19 @@ namespace Account.Api.Controllers.v3
 
         [HttpPost("register-account")]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
+        [AllowAnonymous]
         public async ValueTask<IActionResult> RegisterAccount([FromBody] AppendAccount appendAccount)
         {
             try
             {
-                var response = await this._userCommand.Append<AppendAccountValidator>(appendAccount, new CancellationToken());
+                var response = await this._userCommand.Append<AppendAccountValidator, AppendAccount, AppendAccountMapper>(appendAccount, new CancellationToken());
 
                 response ??= new List<IHandleMessage>();
                 if (response.Any(x => (int)x.Code >= 400 && (int)x.Code < 500))
                 {
                     return await ValueTask.FromResult(BadRequest(response));
                 }
-                else if(response.Any(x => (int)x.Code >= 500 && (int)x.Code < 600))
+                else if (response.Any(x => (int)x.Code >= 500 && (int)x.Code < 600))
                 {
                     return await ValueTask.FromResult(StatusCode(500, response));
                 }
@@ -63,7 +64,7 @@ namespace Account.Api.Controllers.v3
                 appendUser.TenantId = user.TenantId;
                 appendUser.GroupId = user.GroupId;
 
-                var response = await this._userCommand.Append<AppendUserValidator>(appendUser, new CancellationToken());
+                var response = await this._userCommand.Append<AppendUserValidator, AppendUser, AppendUserMapper>(appendUser, new CancellationToken());
 
                 response ??= new List<IHandleMessage>();
                 if (response.Any(x => (int)x.Code >= 400 && (int)x.Code < 500))

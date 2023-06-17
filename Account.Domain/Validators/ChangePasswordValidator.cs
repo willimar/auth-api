@@ -4,7 +4,6 @@ using DataCore.Domain.Concrets;
 using DataCore.Domain.Enumerators;
 using DataCore.Domain.Interfaces;
 using FluentValidation;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Account.Domain.Validators
 {

@@ -48,8 +48,8 @@ namespace Account.Domain.Validators
 
             if (result.IsValid)
             {
-                var acceptMessages = new List<IHandleMessage> 
-                { 
+                var acceptMessages = new List<IHandleMessage>
+                {
                     HandleMessage.Factory("Id", entity.Id.ToString(), HandlesCode.Accepted),
                     HandleMessage.Factory("TenantId", entity.TenantId.ToString(), HandlesCode.Accepted),
                     HandleMessage.Factory("GroupId", entity.GroupId.ToString(), HandlesCode.Accepted),

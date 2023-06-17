@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Account.Domain.Commands.Dtos
+﻿namespace Account.Domain.Commands.Dtos
 {
-    public class ChangeAuthorize: AppendAuthorize
+    public class ChangeAuthorize : AppendAuthorize
     {
     }
 }

@@ -6,8 +6,6 @@ using DataCore.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson.IO;
-using System.Text.Json;
 
 namespace Account.Api.Controllers.v3
 {

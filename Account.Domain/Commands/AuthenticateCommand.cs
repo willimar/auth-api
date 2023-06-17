@@ -1,14 +1,9 @@
 ﻿using Account.Domain.Commands.Dtos;
 using Account.Domain.Entities;
-using DataCore.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Account.Domain.Extensions;
-using DataCore.Jwt.Interfaces;
+using DataCore.Domain.Interfaces;
 using DataCore.Jwt.Extensions;
+using DataCore.Jwt.Interfaces;
 
 namespace Account.Domain.Commands
 {
@@ -23,7 +18,7 @@ namespace Account.Domain.Commands
             this._jwtOptions = jwtOptions;
         }
 
-        public async ValueTask<(string token, string refreshToken, bool isValid)>Authenticate(AutenticateUser autenticateUser)
+        public async ValueTask<(string token, string refreshToken, bool isValid)> Authenticate(AutenticateUser autenticateUser)
         {
             (string token, string refreshToken, bool isValid) response = new();
 
@@ -41,7 +36,7 @@ namespace Account.Domain.Commands
                 {
                     response.isValid = false;
                 }
-                else 
+                else
                 {
                     var user = users.First();
                     var hashList = user.GetHashTo(autenticateUser.Password);

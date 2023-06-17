@@ -7,7 +7,7 @@ namespace Account.Domain.Entities
     {
         public string UserName { get; set; } = string.Empty;
         public string FullName { get; set; } = string.Empty;
-        public string UserEmail { get; set; } = string.Empty; 
+        public string UserEmail { get; set; } = string.Empty;
         public Guid Id { get; set; }
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }

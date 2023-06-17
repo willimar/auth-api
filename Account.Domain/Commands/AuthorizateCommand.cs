@@ -63,7 +63,7 @@ namespace Account.Domain.Commands
             }
 
             _ = this._changeAuthorizeMapper.Map(changeAuthorize, authorize);
-            
+
             var validator = this._service.GetService(typeof(TValidator)) as TValidator;
             response = await this._repositoryWrite.UpdateData(authorize, validator, cancellationToken);
 

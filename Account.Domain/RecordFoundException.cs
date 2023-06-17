@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Account.Domain
+﻿namespace Account.Domain
 {
-    public class RecordFoundException: Exception
+    public class RecordFoundException : Exception
     {
     }
 }

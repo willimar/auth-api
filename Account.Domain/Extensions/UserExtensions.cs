@@ -1,10 +1,4 @@
-﻿using Account.Domain.Entities;
-using DataCore.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DataCore.Domain.Interfaces;
 
 namespace Account.Domain.Extensions
 {

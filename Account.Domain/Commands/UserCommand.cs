@@ -1,11 +1,11 @@
 ﻿using Account.Domain.Commands.Dtos;
 using Account.Domain.Entities;
 using Account.Domain.Extensions;
-using Account.Domain.Mappers;
 using Account.Domain.Properties;
 using DataCore.Domain.Concrets;
 using DataCore.Domain.Enumerators;
 using DataCore.Domain.Interfaces;
+using DataCore.Mapper;
 
 namespace Account.Domain.Commands
 {
@@ -13,24 +13,30 @@ namespace Account.Domain.Commands
     {
         private readonly IRepositoryWrite<User> _writeUser;
         private readonly IRepositoryRead<User> _readUser;
-        private readonly AppendAccountMapper _appendAccountMapper;
-        private readonly AppendUserMapper _appendUserMapper;
         private readonly IServiceProvider _service;
 
-        public UserCommand(IRepositoryWrite<User> writeUser, IRepositoryRead<User> readUser, AppendAccountMapper appendAccountMapper, AppendUserMapper appendUserMapper, IServiceProvider service)
+        public UserCommand(IRepositoryWrite<User> writeUser, IRepositoryRead<User> readUser, IServiceProvider service)
         {
             this._writeUser = writeUser;
             this._readUser = readUser;
-            this._appendAccountMapper = appendAccountMapper;
-            this._appendUserMapper = appendUserMapper;
             this._service = service;
         }
 
-        public async ValueTask<IEnumerable<IHandleMessage>?> Append<TValidator>(AppendAccount append, CancellationToken cancellationToken) where TValidator : class, IValidator<User>
+        public async ValueTask<IEnumerable<IHandleMessage>?> Append<TValidator, TCommand, TMapper>(TCommand append, CancellationToken cancellationToken)
+            where TValidator : class, IValidator<User>
+            where TCommand : AppendAccount
+            where TMapper : class, IMapperProfile<TCommand, User>
         {
-            var user = this._appendAccountMapper.Map(append);
-
             var validator = this._service.GetService(typeof(TValidator)) as TValidator;
+            var mapper = this._service.GetService(typeof(TMapper)) as TMapper;
+
+            if (mapper is null)
+            {
+                throw new ArgumentNullException(nameof(TMapper));
+            }
+
+            var user = mapper.Map(append);
+
             var response = (await this._writeUser.AppenData(user, validator, cancellationToken))?.ToList();
 
             response ??= new List<IHandleMessage>();

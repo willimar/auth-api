@@ -12,7 +12,7 @@ namespace Account.Api.Controllers.v3
     [ApiController]
     [Produces("application/json")]
     [Route("api/v{version:apiVersion}/[controller]/")]
-    public class AuthenticateController: ControllerBase
+    public class AuthenticateController : ControllerBase
     {
         private readonly AuthenticateCommand _authenticateCommand;
 
