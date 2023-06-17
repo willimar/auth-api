@@ -1,6 +1,7 @@
 ﻿using Account.Domain.Commands.Dtos;
 using Account.Domain.Entities;
 using Account.Domain.Extensions;
+using DataCore.Domain.Enumerators;
 using DataCore.Domain.Interfaces;
 using DataCore.Jwt.Extensions;
 using DataCore.Jwt.Interfaces;
@@ -41,7 +42,7 @@ namespace Account.Domain.Commands
                     var user = users.First();
                     var hashList = user.GetHashTo(autenticateUser.Password);
 
-                    if (user.UserHashes.Any(h => hashList.Any(hl => hl == h.Value)))
+                    if (user.UserHashes.Any(h => h.Status == StatusRecord.Active && hashList.Any(hl => hl == h.Value)))
                     {
                         response.isValid = true;
                         response.token = user.CreateToken(this._jwtOptions);
