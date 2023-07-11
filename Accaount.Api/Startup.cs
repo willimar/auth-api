@@ -1,4 +1,5 @@
 using Account.Api.Extensions;
+using Account.Api.Setups;
 using Account.Domain.Setups;
 using DataCore.Domain.Interfaces;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -11,6 +12,8 @@ namespace Account.Api
 {
     public static class Startup
     {
+        public static ServiceSettings ServiceSettings { get; set; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
         {
@@ -35,6 +38,11 @@ namespace Account.Api
 
             services.AddScoped<IDataProviderWrite>(serviceProvider => serviceProvider.GetDataProviderWrite(configuration));
             services.AddScoped<IDataProviderRead>(serviceProvider => serviceProvider.GetDataProviderReader(configuration));
+
+            ServiceSettings = services.StartupBoosttrap(configuration);
+            services.AddConsulSettings(ServiceSettings);
+            services.AddOptions();
+
         }
 
         private static (AssemblyDescriptionAttribute? descriptionAttribute, AssemblyProductAttribute? productAttribute, AssemblyCopyrightAttribute? copyrightAttribute, AssemblyName assemblyName) GetAssemblyInfo()
@@ -84,6 +92,8 @@ namespace Account.Api
         {
             var currentCulture = Thread.CurrentThread.CurrentCulture;
             var suportedCultures = new CultureInfo[] { currentCulture };
+
+            app.UseConsul(ServiceSettings);
 
             app.UseMiddleware<AccountMiddleware>();
             app.ConfigureInSwaggerSimplify(currentCulture, suportedCultures, typeof(Startup).Assembly);

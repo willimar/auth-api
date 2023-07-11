@@ -14,6 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Consul" Version="1.6.10.9" />
     <PackageReference Include="Swagger.Simplify" Version="1.0.2.6" />
   </ItemGroup>
 
