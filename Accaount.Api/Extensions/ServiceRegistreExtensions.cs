@@ -9,7 +9,7 @@ namespace Account.Api.Extensions
         public static IServiceCollection AddConsulSettings(this IServiceCollection services, ServiceSettings serviceSettings)
         {
             services.AddSingleton<IConsulClient, ConsulClient>(p => new ConsulClient(config => {
-                config.Address = new Uri(serviceSettings.ServiceDiscoveryAddres);
+                config.Address = new Uri(serviceSettings.ServiceDiscoveryAddress);
             }));
 
             return services;
